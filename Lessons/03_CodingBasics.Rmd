@@ -28,86 +28,92 @@ R treats objects differently based on their characteristics. For more informatio
 
 Define what each new piece of syntax does below (i.e., fill in blank comments). Note that the R chunk has been divided into sections (# at beginning of line, ---- at end)
 ```{r}
-# Vectors ----
-vector1 <- c(1,2,5.3,6,-2,4) # numeric vector
+# Vectors ---- #this pattern, # followed by 4 - allows you to expand and collapse this section
+vector1 <- c(1,2,5.3,6,-2,4) # numeric vector. c means concatenate
 vector1
-vector2 <- c("one","two","three") # character vector
+vector2 <- c("one","two","three") # character vector. We needed quotations b/c they're strings, or r will thing it's an operation.
 vector2
-vector3 <- c(TRUE,TRUE,TRUE,FALSE,TRUE,FALSE) #logical vector
+vector3 <- c(TRUE,TRUE,TRUE,FALSE,TRUE,FALSE) #logical vector. Since TRUE and FALSE are capital, r knows its a logical statement, no need for quotations
 vector3
 
-vector1[3] # 
+vector1[3] # R chooses the 3rd item in vector1. [] means matrix subsetting, call up the ordinal number inside the brackets
 
 # Matrices ----
-matrix1 <- matrix(1:20, nrow = 5,ncol = 4) # 
+matrix1 <- matrix(1:20, nrow = 5,ncol = 4) # matrices need rows and columns. matrix is a function, r knows what it needs to do. 
 matrix1
-matrix2 <- matrix(1:20, nrow = 5, ncol = 4, byrow = TRUE) #
+matrix2 <- matrix(1:20, nrow = 5, ncol = 4, byrow = TRUE) #byrow means that we start counting across rows, rather than going down a column.
 matrix2
 matrix3 <- matrix(1:20, nrow = 5, ncol = 4, byrow = TRUE, # return after comma continues the line
                   dimnames = list(c("uno", "dos", "tres", "cuatro", "cinco"), 
-                                  c("un", "deux", "trois", "cat"))) #
+                                  c("un", "deux", "trois", "cat"))) #dimnames means dimension names, so that it gives each column a header
+matrix3
+matrix1[4, ] #Gives every value in row 4
+matrix1[ , 3] #Gives every value in column 3
+matrix1[c(12, 14)] #Gives the values of numbers in position 12 and 14. Specific objects in the matrix
+matrix1[c(12:14)] # Gives every value between position 12 and 14
+matrix1[2:4, 1:3] #Gives rows 2-4, columns 1-3
 
-matrix1[4, ] #
-matrix1[ , 3] #
-matrix1[c(12, 14)] #
-matrix1[c(12:14)] #
-matrix1[2:4, 1:3] #
-
-cells <- c(1, 26, 24, 68)
+cells <- c(1, 26, 24, 68) #building a matrix from scratch, starting with a vector
 rnames <- c("R1", "R2")
 cnames <- c("C1", "C2") 
 matrix4 <- matrix(cells, nrow = 2, ncol = 2, byrow = TRUE,
-  dimnames = list(rnames, cnames)) # 
+  dimnames = list(rnames, cnames)) # making a matrix from those pieces we just created
 matrix4
 
 # Lists ---- 
-list1 <- list(name = "Maria", mynumbers = vector1, mymatrix = matrix1, age = 5.3); list1
+list1 <- list(name = "Maria", mynumbers = vector1, mymatrix = matrix1, age = 5.3); list1 #semicolon means you can run with just one keystroke. List is a collection of the matrices, vectors, etc that we wrote
 list1[[2]]
 
 # Data Frames ----
-d <- c(1, 2, 3, 4) # What type of vector?
-e <- c("red", "white", "red", NA) # What type of vector?
-f <- c(TRUE, TRUE, TRUE, FALSE) # What type of vector?
+d <- c(1, 2, 3, 4) # What type of vector? Num
+e <- c("red", "white", "red", NA) # What type of vector? Chr
+f <- c(TRUE, TRUE, TRUE, FALSE) # What type of vector? Logi
 dataframe1 <- data.frame(d,e,f) #
 names(dataframe1) <- c("ID","Color","Passed"); View(dataframe1) # 
 
-dataframe1[1:2,] # 
-dataframe1[c("ID","Passed")] # 
-dataframe1$ID
+dataframe1[1:2,] # rows 1-2. R will always skip the first/header row.
+dataframe1[c("ID","Passed")] # Only showing columns with ID and Passed
+dataframe1$ID #$ calls up a specific column
 
 ```
 Question: How do the different types of data appear in the Environment tab?
 
-> Answer: 
+> Answer: dataframes, lists, matrices appear as data, vectors appear as values
 
 Question: In the R chunk below, write "dataframe1$". Press `tab` after you type the dollar sign. What happens?
 
-> Answer: 
+> Answer: It gives me a choice of the three variables, ID, color, and Passed.
 
 ### Coding challenge
 
 Find a ten-day forecast of temperatures (Fahrenheit) for Durham, North Carolina. Create two vectors, one representing the high temperature on each of the ten days and one representing the low.
 
 ```{r}
-
+hiF<-c(62,45,50,50,40,40,45,52,54,58)
+loF<-c(31,29,43,24,23,23,26,30,42,41)
 ```
 
 Now, create two additional vectors that include the ten-day forecast for the high and low temperatures in Celsius.
 
 ```{r}
-
+hiC<-(hiF-32)*(5/9)
+loC<-(loF-32)*(5/9)
 ```
 
 Combine your four vectors into a data frame and add informative column names.
 
 ```{r}
-
+dataframeTemp <- data.frame(hiF,hiC,loF,loC) 
+names(dataframeTemp) <- c("HiF","HiC","LowF","LowC"); View(dataframeTemp) 
 ```
 
 Use the common functions `summary` and `sd` to obtain basic data summaries of the ten-day forecast. How would you call these functions differently for the entire data frame vs. a single column? Attempt to demonstrate both options below.
 
 ```{r}
-
+summary(dataframeTemp)
+summary(dataframeTemp$HiF)
+sd(dataframeTemp)#should only work for specific lists/columns
+sd(dataframeTemp$HiC)
 ```
 
 
@@ -144,7 +150,7 @@ library(tidyverse)
 
 Question: What happens in the console when you load a package?
 
-> Answer: 
+> Answer: It attaches other packages, and lists some conflicts
 
 
 ## Tips and Tricks
